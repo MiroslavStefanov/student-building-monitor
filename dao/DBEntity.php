@@ -9,7 +9,7 @@ class DBEntity {
 
 
     public function __construct($database, string $class, string $tableName, array $columns) {
-			$this->className = $className;
+			$this->className = $class;
 			$this->table = $tableName;
 			$this->columns = $columns;
 			$this->database = $database;
