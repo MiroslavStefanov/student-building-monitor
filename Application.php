@@ -31,10 +31,14 @@ class Application {
 	
 }
 
+class Nom {
+	public $ID = '';
+	public $NAME = '';
+	
+	public function getName() {return $this->NAME;}
+}
+
 $app = new Application();
 $db = $app->connectDB(true);
 
-$degree = $db->makeEntity('NOM_ACADEMIC_DEGREE', ['id', 'name']);
-$record = $degree->getEntity('1');
-echo $record;
 ?>

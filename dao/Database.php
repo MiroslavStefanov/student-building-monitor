@@ -12,8 +12,8 @@ class Database {
 		$this->properties = $properties;
     }
 	
-	public function makeEntity(string $table, array $columns) : DBEntity {		
-		return new DBEntity($this->getConntection(), $table, $columns);
+	public function makeEntity(string $class, string $table, array $columns) : DBEntity {		
+		return new DBEntity($this->getConntection(), $class, $this->properties["database.name"].".".$table, $columns);
 	}
 	
 	public function executeScript(string $filename) {
