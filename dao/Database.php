@@ -1,19 +1,22 @@
 <?php
 
-require('DBEntity.php');
+require_once('DBEntity.php');
+require_once('IdCounter.php');
 
 class Database {
 	
 	private $properties = [];
     private $connection = NULL;
+	private $idEntity = NULL;
 
 
     public function __construct(array $properties) {
 		$this->properties = $properties;
+		$this->idEntity = $this->makeEntity('IdCounter', "ID_COUNTERS");
     }
 	
-	public function makeEntity(string $class, string $table, array $columns) : DBEntity {		
-		return new DBEntity($this->getConntection(), $class, $this->properties["database.name"].".".$table, $columns);
+	public function makeEntity(string $class, string $table) : DBEntity {		
+		return new DBEntity($this->getConntection(), $this->idEntity, $class, $this->properties["database.name"].".".$table);
 	}
 	
 	public function executeScript(string $filename) {
@@ -28,8 +31,8 @@ class Database {
 			
 			echo "Executing script $filename<br/>";
 			$result = $this->getConntection()->exec($sql);
-			
-			if(!$result) {
+
+			if($result === false) {
 				echo "Failed<br/>";
 			} else {
 				echo "Success<br/>";

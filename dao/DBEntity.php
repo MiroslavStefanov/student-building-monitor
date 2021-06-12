@@ -1,24 +1,27 @@
 <?php
 
+require_once('IdCounter.php');
+
 class DBEntity {
 	
 	private $className = '';
 	private $table = '';
 	private $columns = [];
 	private $database = NULL;
+	private $idEntity = NULL;
 
 
-    public function __construct($database, string $class, string $tableName, array $columns) {
-			$this->className = $class;
-			$this->table = $tableName;
-			$this->columns = $columns;
-			$this->database = $database;
-        }
-	
-	public function defineColum(string $name) {
-		array_push($this->columns, $name);
-		$this->columns = array_unique($this->columns);
-	}
+    public function __construct($database, $idEntity, string $class, string $tableName) {
+		$this->className = $class;
+		$this->table = $tableName;
+		$this->database = $database;
+		$this->idEntity = $idEntity;
+		
+		$classReflection = get_class_vars($class);
+		foreach($classReflection as $property => $value) {
+			array_push($this->columns, $property);
+		}
+    }
 	
 	public function getEntity(string $id) {
 		try {
@@ -38,28 +41,53 @@ class DBEntity {
 			return false;
 		}
 	}
-
-    public function saveEntity($entity, $id) : bool {
-		$sql = '';
-		$values = array_reduce($this->columns, function($result, $value) use($entity) { 
-			$result[$value] = $entity->$value; 
+	
+	public function getAllEntities() {
+		try {
+			$db = $this->getDBConntection();
+			$sql   = "SELECT * FROM {$this->table}";
+			$query = $db->query($sql) or die("failed!");
+			$query->setFetchMode(PDO::FETCH_CLASS, $this->className);
+			$result = $query->fetchAll();
 			return $result;
-		}, []);
+		} catch (PDOException $e){
+			$error_msg = $e->getMessage();
+            echo $error_msg;
+			return false;
+		}
+	}
+
+    public function saveEntity($entity) : bool {
+		$sql = '';
+		$idCounter = false;
 		
-		if($this->getEntity($id) == false) {
+		$isNewEntity = !property_exists($entity, 'ID') 
+			|| !$entity->ID
+			|| $this->getEntity($entity->ID) === false;
+		if($isNewEntity) {
 			$joinedColumns = implode(', ', $this->columns);
 			$joinedBindings = implode(', :', $this->columns);
-			
+			$idCounter = $this->getIdCounter();
+			$entity->ID = $idCounter->NEXT_ID;
 			$sql = "INSERT INTO $this->table ($joinedColumns) VALUES (:$joinedBindings);";
 		} else {
 			$statements = array_map(function($name){ return "$name = :$name"; }, $this->columns);
 			$joinedStatements = implode(', ', $statements);
-			$sql = "UPDATE $this->table SET $joinedStatements WHERE id=$id;";
+			$sql = "UPDATE $this->table SET $joinedStatements WHERE id=$entity->ID;";
 		}
 		
 		try {
 			$db = $this->getDBConntection();
+			$values = array_reduce($this->columns, function($result, $value) use($entity) { 
+					$result[$value] = $entity->$value; 
+					return $result;
+				}, []);
 			$result = $db->prepare($sql)->execute($values);
+			if($result && $isNewEntity) {
+				$idCounter->NEXT_ID = $idCounter->NEXT_ID + 1;
+				$this->idEntity->saveEntity($idCounter);
+			}
+			
 			return $result != false;
 		} catch (PDOException $e){
 			$error_msg = $e->getMessage();
@@ -72,7 +100,6 @@ class DBEntity {
 		$sql = "DELETE FROM $this->table WHERE id = $id";
 		
 		try {
-			echo "$sql<br/>";
 			$db = $this->getDBConntection();
 			$result = $db->prepare($sql)->execute();
 			return $result != false;
@@ -89,6 +116,18 @@ class DBEntity {
 		}
 		
 		return $this->database;
+	}
+	
+	private function getIdCounter() : IdCounter {
+		$key = $this->getTableName();
+		$entities = $this->idEntity->getAllEntities();
+		$entities = array_filter($entities, function ($entity) use ($key) { return $entity->TABLE_NAME == $key;} );
+		return $entities[0];
+	}
+	
+	private function getTableName() : string {
+		$elements = explode('.', $this->table);
+		return $elements[1];
 	}
 }
 
