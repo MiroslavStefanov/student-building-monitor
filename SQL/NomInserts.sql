@@ -20,3 +20,10 @@ INSERT INTO `StudentBuildingMonitor`.`NOM_ACADEMIC_SPECIALIZATION` (`ID`, `NAME`
 INSERT INTO `StudentBuildingMonitor`.`NOM_CARDHOLDER_TYPE` (`ID`, `NAME`) VALUES ('1', 'Студент');
 INSERT INTO `StudentBuildingMonitor`.`NOM_CARDHOLDER_TYPE` (`ID`, `NAME`) VALUES ('2', 'Преподавател');
 INSERT INTO `StudentBuildingMonitor`.`NOM_CARDHOLDER_TYPE` (`ID`, `NAME`) VALUES ('3', 'Служител');
+
+INSERT INTO `StudentBuildingMonitor`.`ID_COUNTERS` (`ID`, `TABLE_NAME`, `NEXT_ID`) VALUES ('1', 'CARDHOLDERS', '10000');
+INSERT INTO `StudentBuildingMonitor`.`ID_COUNTERS` (`ID`, `TABLE_NAME`, `NEXT_ID`) VALUES ('2', 'STUDENTS'   , '10000');
+INSERT INTO `StudentBuildingMonitor`.`ID_COUNTERS` (`ID`, `TABLE_NAME`, `NEXT_ID`) VALUES ('3', 'TUTORS'     , '10000');
+INSERT INTO `StudentBuildingMonitor`.`ID_COUNTERS` (`ID`, `TABLE_NAME`, `NEXT_ID`) VALUES ('4', 'EMPLOYEES'  , '10000');
+INSERT INTO `StudentBuildingMonitor`.`ID_COUNTERS` (`ID`, `TABLE_NAME`, `NEXT_ID`) VALUES ('5', 'PASSAGES'   , '10000');
+INSERT INTO `StudentBuildingMonitor`.`ID_COUNTERS` (`ID`, `TABLE_NAME`, `NEXT_ID`) VALUES ('6', 'COURSES'    , '10000');
