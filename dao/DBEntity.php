@@ -1,6 +1,6 @@
 <?php
 
-require_once('IdCounter.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/dao/IdCounter.php');
 
 class DBEntity {
 	
@@ -12,16 +12,16 @@ class DBEntity {
 
 
     public function __construct($database, $idEntity, string $class, string $tableName) {
-		$this->className = $class;
-		$this->table = $tableName;
-		$this->database = $database;
-		$this->idEntity = $idEntity;
-		
-		$classReflection = get_class_vars($class);
-		foreach($classReflection as $property => $value) {
-			array_push($this->columns, $property);
-		}
-    }
+			$this->className = $class;
+			$this->table = $tableName;
+			$this->database = $database;
+			$this->idEntity = $idEntity;
+			
+			$classReflection = get_class_vars($class);
+			foreach($classReflection as $property => $value) {
+				array_push($this->columns, $property);
+			}
+        }
 	
 	public function getEntity(string $id) {
 		try {

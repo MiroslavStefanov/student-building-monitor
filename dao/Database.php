@@ -1,50 +1,43 @@
 <?php
 
-require_once('DBEntity.php');
-require_once('IdCounter.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/app/Config.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/utils/FileService.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/dao/DBEntity.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/dao/IdCounter.php');
 
 class Database {
-	
-	private $properties = [];
+
     private $connection = NULL;
 	private $idEntity = NULL;
 
-
-    public function __construct(array $properties) {
-		$this->properties = $properties;
+    public function __construct() {
 		$this->idEntity = $this->makeEntity('IdCounter', "ID_COUNTERS");
     }
 	
-	public function makeEntity(string $class, string $table) : DBEntity {		
-		return new DBEntity($this->getConntection(), $this->idEntity, $class, $this->properties["database.name"].".".$table);
+	public function makeEntity(string $class, string $table) : DBEntity {
+        $database = Config::getInstance()->getProperty("database.name");
+        if(!$database) {
+            throw new Exception("Missing property database.name");
+        }
+		return new DBEntity($this->getConntection(), $this->idEntity, $class, $database.".".$table);
 	}
 	
 	public function executeScript(string $filename) {
-		
-		try {
-			$file = fopen($filename, 'r');
-			if($file == false) {
-				throw new Exception("Cannot read file $filename");
-			}
-			
-			$sql = fread($file, filesize($filename));
-			
-			echo "Executing script $filename<br/>";
+        echo "Executing script $filename<br/>";
+        try {
+			$sql = readFile($filename);
 			$result = $this->getConntection()->exec($sql);
 
 			if($result === false) {
-				echo "Failed<br/>";
+				echo "Fail<br/>";
 			} else {
-				echo "Success<br/>";
-			}
+			    echo "Success<br/>";
+            }
 			
-		} catch (PDOException $e){
+		} catch (Exception $e){
 			$error_msg = $e->getMessage();
-            echo $error_msg;
-		} finally {
-			if($file != false) {
-				fclose($file);
-			}
+            echo "Fail<br/>";
+            echo "$error_msg<br/>";
 		}
 	}
 		
@@ -65,7 +58,7 @@ class Database {
         }catch(PDOException $e){
             $error_msg = $e->getMessage();
             echo $error_msg;
-			throw $e;
+			die("Couldn't connect to database! Error: $error_msg");
         }
 
         return $this->connection;
