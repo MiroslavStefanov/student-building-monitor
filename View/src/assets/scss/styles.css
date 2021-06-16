@@ -1,3 +1,53 @@
 .column, .columns {
   flex: auto;
 }
+
+.button.primary, .button.primary.disabled, .button.primary[disabled], .button.primary.disabled:hover, .button.primary[disabled]:hover, .button.primary.disabled:focus, .button.primary[disabled]:focus {
+  background-color: bisque;
+  color: cornflowerblue;
+}
+
+.button, .button.disabled, .button[disabled], .button.disabled:hover, .button[disabled]:hover, .button.disabled:focus, .button[disabled]:focus {
+  background-color: bisque;
+  color: cornflowerblue;
+}
+
+.translucent-form-overlay2 {
+  max-width: 500px;
+  width: 100%;
+  padding: 20px;
+  background-color: azure;
+  color: #417be7;
+  margin: auto; }
+  .translucent-form-overlay2 .columns.row {
+    display: block; }
+  .translucent-form-overlay2 h3, .translucent-form-overlay2 label {
+    color: cornflowerblue; }
+  .translucent-form-overlay2 input, .translucent-form-overlay2 select {
+    color: cornflowerblue; }
+  .translucent-form-overlay2 input::-webkit-input-placeholder {
+    color: cornflowerblue; }
+  .translucent-form-overlay2 input::-moz-placeholder {
+    color: cornflowerblue; }
+  .translucent-form-overlay2 input:-ms-input-placeholder {
+    color: cornflowerblue; }
+  .translucent-form-overlay2 input::-ms-input-placeholder {
+    color: cornflowerblue; }
+  .translucent-form-overlay2 input::placeholder {
+    color: cornflowerblue; }
+
+.app-dashboard-body {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: url(../img/csvToDB.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}

@@ -28,48 +28,28 @@
         </div>
       </div>
 			<div class="app-dashboard-body off-canvas-wrapper">
-        <div class="translucent-form-overlay">
+        <div class="translucent-form-overlay2">
+          <p>Тук можете да попълвате данни в базата. За тази цел изберете към коя таблица се отнасят данните и прикачете съответния .csv файл.</p>
           <form>
-            <h3>Search for Properties</h3>
+            <h3>Импорт на данни</h3>
             <div class="row columns">
-              <label>Keyword
-                <input type="text" name="keyword" placeholder="Any">
-              </label>
-            </div>
-            <div class="row columns">
-              <label>Property Status
-                <select name="status" type="text">
-                  <option>Any</option>
-                  <option value="rent">Rent</option>
-                  <option value="buy">Buy</option>
+              <label>Избор на таблица
+                <select name="tableName" type="text" required="true">
+                  <option value="CARDHOLDERS">Картоносители</option>
+                  <option value="STUDENTS">Студенти</option>
+                  <option value="TUTORS">Преподаватели</option>
+                  <option value="EMPLOYEES">Служители</option>
+                  <option value="COURSES">Курсове</option>
+                  <option value="PASSAGES">Преминавания</option>
+                  <option value="STUDENTS_TAKING_COURSES">Студенти и курсове</option>
+                  <option value="TUTORS_TEACHING_COURSES">Преподаватели и курсове</option>
                 </select>
               </label>
-            </div>
-            <div class="row columns">
-              <label>Property Type
-                <select name="status" type="text">
-                  <option>Any</option>
-                  <option value="office">Office</option>
-                  <option value="building">Building</option>
-                </select>
-              </label>
-            </div>
-            <div class="row columns">
-              <label>Location
-                <input type="text" name="location" placeholder="Any">
-              </label>
-            </div>
-            <div class="row">
-              <label class="columns small-12">Price</label>
-              <div class="columns small-6">
-                <input type="number" min="0" name="min" placeholder="Min">
-              </div>
-              <div class="columns small-6">
-                <input type="number" min="0" name="max" placeholder="Max">
-              </div>
+              <label for="csvFileUpload" class="button">Избери файл</label>
+              <input type="file" id="csvFileUpload" class="show-for-sr" accept=".csv" name="filename">
             </div>
             <button type="button" class="primary button expanded search-button">
-              Search
+              Импортирай
             </button>
           </form>
         </div>
