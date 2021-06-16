@@ -2,9 +2,9 @@
 
 require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/app/Config.php');
 require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/app/RequestHandler.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/dao/Database.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/dao/CardHolder.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/utils/CSVService.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/dao/Database.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/dao/CardHolder.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/utils/CSVService.php');
 require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/controllers/ImportController.php');
 
 class Application {

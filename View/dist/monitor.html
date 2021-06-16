@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>Creating Dynamic Data Graph using PHP and Chart.js</title>
+<style type="text/css">
+BODY {
+    width: 550PX;
+}
+
+#chart-container {
+    width: 100%;
+    height: auto;
+}
+</style>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+
+
+</head>
+<body>
+<p>ebasi zmqta</p>
+    <div id="chart-container">
+        <canvas id="graphCanvas"></canvas>
+    </div>
+
+    <script>
+
+        const labels = [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+        ];
+        const data = {
+          labels: labels,
+          datasets: [{
+            label: 'My First dataset',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45],
+          }]
+        };
+        const config = {
+          type: 'line',
+          data,
+          options: {}
+        };
+
+        var myChart = new Chart(
+        document.getElementById('graphCanvas'),
+        config
+        );
+     </script>
+
+</body>
+</html>
