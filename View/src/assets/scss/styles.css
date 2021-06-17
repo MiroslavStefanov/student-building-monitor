@@ -1,5 +1,6 @@
 .column, .columns {
   flex: auto;
+  padding: 20px;
 }
 
 .button.primary, .button.primary.disabled, .button.primary[disabled], .button.primary.disabled:hover, .button.primary[disabled]:hover, .button.primary.disabled:focus, .button.primary[disabled]:focus {
@@ -50,4 +51,9 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+
+#chart-container {
+  width: 100%;
+  height: auto;
 }
