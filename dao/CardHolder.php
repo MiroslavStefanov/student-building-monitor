@@ -1,5 +1,7 @@
 <?php
 
+namespace monitor;
+
 class CardHolder {
 	public $ID;
 	public $NAME;

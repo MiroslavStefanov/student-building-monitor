@@ -1,7 +1,6 @@
 <?php
 
-require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/utils/FileService.php');
-require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/app/Config.php');
+namespace monitor;
 
 class ModelAndView {
     private $view = false;
@@ -14,16 +13,18 @@ class ModelAndView {
         return $result;
     }
 
-    public function render() {
+    public function render($application) {
         if($this->view === false) {
             return;
         }
 
-        $config = Config::getInstance();
-        $filePath = $config->getProperty('application.root')
-            .$config->getProperty('application.pages')
-            .$this->view;
-        $page = utils\readFile($filePath);
-        echo $page;
+        $config = $application->getConfig();
+        $this->model['resources'] = '../'.$config['app_pages'].'/';
+        $this->model['actions'] = '.'.$config['app_root'].$config['app_endpoints'].'/';
+        include_once ($config['app_pages'].'/'.$this->view);
+    }
+
+    private function get(string $property) {
+        echo $this->model[$property];
     }
 }

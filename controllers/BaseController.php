@@ -1,5 +1,8 @@
 <?php
-require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/controllers/ModelAndView.php');
+
+namespace monitor;
+
+require_once ('controllers/ModelAndView.php');
 
 class BaseController {
     protected $application;

@@ -1,6 +1,12 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/dao/IdCounter.php');
+namespace monitor;
+
+use PDO;
+use PDOException;
+
+require_once ('dao/IdCounter.php');
+require_once ('dao/CardHolder.php');
 
 class DBEntity {
 	
@@ -16,8 +22,9 @@ class DBEntity {
 			$this->table = $tableName;
 			$this->database = $database;
 			$this->idEntity = $idEntity;
-			
+
 			$classReflection = get_class_vars($class);
+			echo $class;
 			foreach($classReflection as $property => $value) {
 				array_push($this->columns, $property);
 			}

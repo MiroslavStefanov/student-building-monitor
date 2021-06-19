@@ -1,17 +1,24 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/controllers/BaseController.php');
-require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/controllers/ModelAndView.php');
-require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/app/Application.php');
-require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/utils/FileService.php');
+namespace monitor;
+
+use Exception;
+
+require_once ('controllers/BaseController.php');
+require_once ('controllers/ModelAndView.php');
+require_once ('app/Application.php');
+require_once ('utils/FileService.php');
+require_once ('utils/CSVService.php');
 
 class ImportController extends BaseController {
 
     const SUBMIT_BUTTON = "submit";
     const FILE_INPUT = "file";
+    const TARGET_INPUT = "tableName";
 
     public function get() : ModelAndView {
-        return ModelAndView::withModelAndView(["message" => "Eeeekstra"], 'index.html');
+        $config = $this->application->getConfig();
+        return ModelAndView::withModelAndView([], 'import.html');
     }
 
     public function post() : ModelAndView {
@@ -21,7 +28,9 @@ class ImportController extends BaseController {
                 echo "Return Code: " . $_FILES["file"]["error"] . "<br />";
             } else {
                 $fileName = $fileProperties["tmp_name"];
-                $this->importFile($fileName, 'CARDHOLDERS');
+                $target = $_POST[self::TARGET_INPUT];
+                $targetClass = $this->getImportTargetClass($target);
+                $this->importFile($fileName, $targetClass);
                 return ModelAndView::withModelAndView(["file" => $fileName],'index.html');
             }
         } else {
@@ -32,11 +41,26 @@ class ImportController extends BaseController {
     }
 
     private function importFile($fileName, $className) {
+        echo "Importing file $fileName into class $className<br/>";
         try {
-            $content = utils\readFile($fileName);
-            $this->application->importDBEntities($content, $className);
+            //$content = readTempFile($fileName);
+            $entities = readCSVEntities($fileName);
+            $dbEntity = $this->application->getDBEntity($className);
+            foreach ($entities as $entity) {
+                var_dump($entity);
+                echo'<br/>';
+                $dbEntity->saveEntity($entity);
+            }
         } catch (Exception $e) {
             throw new Exception("Importing file $fileName as $className failed.", 0, $e);
         }
+    }
+
+    private function getImportTargetClass($target) {
+        switch ($target) {
+            case 'CARDHOLDERS':
+                return 'CardHolder';
+        }
+        throw new Exception('Unhandled import target: '.$target);
     }
 }
