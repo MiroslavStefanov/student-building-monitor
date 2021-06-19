@@ -7,22 +7,26 @@
 	  <title>Student Building Monitor</title>
 	  <link rel="stylesheet" href="assets/css/app.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+    <script type="text/javascript" src="assets/js/charts.js"></script>
 	</head>
 	<body>
 		<div class="app-dashboard shrink-medium">
       <div class="row expanded app-dashboard-top-nav-bar">
         <div class="columns medium-2">
           <button data-toggle="app-dashboard-sidebar" class="menu-icon hide-for-medium"></button>
-          <a class="app-dashboard-logo">Монитор</a>
+          <a href="index.html" class="app-dashboard-logo">
+            <i class="medium fi-monitor"></i>
+            Монитор
+          </a>
         </div>
         <div class="columns shrink app-dashboard-top-bar-actions">
-          <a href="import.html" height="30" width="30" alt="" class="app-dashboard-logo">
+          <a href="Import.php" height="30" width="30" alt="" class="app-dashboard-logo">
             <i class="medium fi-plus"></i>
             Импорт
           </a>
         </div>
         <div class="columns app-dashboard-top-bar-actions">
-          <a href="#" height="30" width="30" alt="" class="app-dashboard-logo">
+          <a href="about.html" height="30" width="30" alt="" class="app-dashboard-logo">
             <i class="medium fi-info"></i>
             За нас
           </a>
@@ -31,60 +35,36 @@
 			<div class="app-dashboard-body off-canvas-wrapper">
         <div id="app-dashboard-sidebar" class="app-dashboard-sidebar position-left off-canvas off-canvas-absolute reveal-for-medium" data-off-canvas>
           <div class="app-dashboard-sidebar-title-area">
-            <div class="app-dashboard-close-sidebar">
-              <h3 class="app-dashboard-sidebar-block-title">Items</h3>
-              <!-- Close button -->
-              <button id="close-sidebar" data-app-dashboard-toggle-shrink class="app-dashboard-sidebar-close-button show-for-medium" aria-label="Close menu" type="button">
-                <span aria-hidden="true"><a href="#"><i class="medium fi-previous"></i></a></span>
-              </button>
-            </div>
-            <div class="app-dashboard-open-sidebar">
-              <button id="open-sidebar" data-app-dashboard-toggle-shrink class="app-dashboard-open-sidebar-button show-for-medium" aria-label="open menu" type="button">
-                <span aria-hidden="true"><a href="#"><i class="medium fi-next"></i></a></span>
-              </button>
-            </div>
+            <h3 class="app-dashboard-sidebar-block-title">Филтър</h3>
           </div>
           <div class="app-dashboard-sidebar-inner">
-            <ul class="menu vertical">
-              <li><a href="#" class="is-active">
-                <i class="large fi-no-smoking" :before></i><span class="app-dashboard-sidebar-text">Buildings</span>
-              </a></li>
-              <li><a>
-                <i class="medium fi-no-smoking"></i><span class="app-dashboard-sidebar-text">Time</span>
-              </a></li>
-              <li><a>
-                <i class="small fi-no-smoking"></i><span class="app-dashboard-sidebar-text">Industry</span>
-              </a></li>
-              <li><a href="#" class="is-active">
-                <i class="medium fi-no-smoking"></i><span class="app-dashboard-sidebar-text">Buildings</span>
-              </a></li>
-              <li><a>
-                <i class="large fa fa-hourglass"></i><span class="app-dashboard-sidebar-text">Time</span>
-              </a></li>
-              <li><a>
-                <i class="large fa fa-industry"></i><span class="app-dashboard-sidebar-text">Industry</span>
-              </a></li>
-              <li><a href="#" class="is-active">
-                <i class="large fa fa-institution"></i><span class="app-dashboard-sidebar-text">Buildings</span>
-              </a></li>
-              <li><a>
-                <i class="large fa fa-hourglass"></i><span class="app-dashboard-sidebar-text">Time</span>
-              </a></li>
-              <li><a>
-                <i class="large fa fa-industry"></i><span class="app-dashboard-sidebar-text">Industry</span>
-              </a></li>
-            </ul>
+            <div class="menu vertical">
+              <label class="container">По тип картоносител
+                <input type="radio" checked="checked" name="filter">
+                <span class="checkmark"></span>
+              </label>
+              <label class="container">По образование
+                <input type="radio" name="filter">
+                <span class="checkmark"></span>
+              </label>
+              <label class="container">Студенти по специланост
+                <input type="radio" name="filter">
+                <span class="checkmark"></span>
+              </label>
+            </div>
           </div>
         </div>
       
         <div class="app-dashboard-body-content off-canvas-content" data-off-canvas-content>
           <h2 class="text-center">Lorem Ipsum</h2>
           <p>ebasi zmqta</p>
+          <p id="p1"></p>
           <div id="chart-container">
               <canvas id="graphCanvas"></canvas>
           </div>
 
           <script>
+              test();
 
               const labels = [
                 'January',

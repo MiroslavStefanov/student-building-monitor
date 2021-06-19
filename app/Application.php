@@ -13,6 +13,7 @@ require_once ('dao/Passage.php');
 require_once ('dao/Student.php');
 require_once ('dao/Tutor.php');
 require_once ('controllers/ImportController.php');
+require_once ('controllers/IndexController.php');
 
 class Application {
     private $config = [];
@@ -59,6 +60,7 @@ class Application {
 	    $this->defineDBEntity('Student', 'STUDENTS');
 	    $this->defineDBEntity('Tutor', 'TUTORS');
         $this->requestHandler->registerController("/Import.php", new ImportController($this));
+        $this->requestHandler->registerController("/Index.php", new IndexController($this));
     }
 
     private function defineDBEntity(string $className, string $table) {
