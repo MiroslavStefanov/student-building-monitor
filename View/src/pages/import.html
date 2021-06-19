@@ -1,6 +1,6 @@
         <div class="translucent-form-overlay2">
           <p>Тук можете да попълвате данни в базата. За тази цел изберете към коя таблица се отнасят данните и прикачете съответния .csv файл.</p>
-          <form>
+          <form method="post" action="Import.php" enctype="multipart/form-data">
             <h3>Импорт на данни</h3>
             <div class="row columns">
               <label>Избор на таблица
@@ -16,10 +16,8 @@
                 </select>
               </label>
               <label for="csvFileUpload" class="button">Избери файл</label>
-              <input type="file" id="csvFileUpload" class="show-for-sr" accept=".csv" name="filename">
+              <input type="file" id="csvFileUpload" class="show-for-sr" accept=".csv" name="file">
             </div>
-            <button type="button" class="primary button expanded search-button">
-              Импортирай
-            </button>
+            <input type="submit" name="submit" value="Импортирай" class="primary button expanded search-button" />
           </form>
         </div>
