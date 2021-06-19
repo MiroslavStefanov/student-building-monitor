@@ -2,6 +2,7 @@
 
 namespace monitor;
 
+use Exception;
 use PDO;
 use PDOException;
 
@@ -61,7 +62,7 @@ class DBEntity {
 		}
 	}
 
-    public function saveEntity($entity) : bool {
+    public function saveEntity($entity) {
 		$sql = '';
 		$idCounter = false;
 		
@@ -82,20 +83,27 @@ class DBEntity {
 		
 		try {
 			$values = array_reduce($this->columns, function($result, $value) use($entity) { 
-					$result[$value] = $entity->$value; 
+					$result[$value] = $entity->$value;
 					return $result;
 				}, []);
-			$result = $this->database->prepare($sql)->execute($values);
+			$statement = $this->database->prepare($sql);
+			$result = $statement->execute($values);
+
+			if(!$result) {
+                $errors = $statement->errorInfo();
+                $sqlError = $errors[2];
+                throw new Exception("Error $sqlError in statement $sql");
+            }
+
 			if($result && $isNewEntity) {
 				$idCounter->NEXT_ID = $idCounter->NEXT_ID + 1;
 				$this->idEntity->saveEntity($idCounter);
 			}
 			
-			return $result != false;
 		} catch (PDOException $e){
 			$error_msg = $e->getMessage();
             echo $error_msg;
-			return false;
+			throw new Exception("Sql statement failed $sql", 0, $e);
 		}
 	}
 	
@@ -116,7 +124,7 @@ class DBEntity {
 		$key = $this->getTableName();
 		$entities = $this->idEntity->getAllEntities();
 		$entities = array_filter($entities, function ($entity) use ($key) { return $entity->TABLE_NAME == $key;} );
-		return $entities[0];
+		return reset($entities);
 	}
 	
 	private function getTableName() : string {

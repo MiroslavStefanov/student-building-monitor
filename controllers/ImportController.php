@@ -33,20 +33,23 @@ class ImportController extends BaseController {
         $target = $_POST[self::TARGET_INPUT];
         $fileName = $fileProperties["tmp_name"];
         $targetClass = $this->getImportTargetClass($target);
-        $this->importFile($fileName, $targetClass);
+        $importCount = $this->importFile($fileName, $targetClass);
+        echo "Rows imported: $importCount<br/>";
         return ModelAndView::withModelAndView(["file" => $fileName],'import.html');
     }
 
-    private function importFile($fileName, $className) {
+    private function importFile($fileName, $className) : int {
         echo "Importing file $fileName into class $className<br/>";
         try {
             $entities = readCSVEntities($fileName);
             $dbEntity = $this->application->getDBEntity($className);
             $fullClass = 'monitor\\'.$className;
+            $savedCount = 0;
             foreach ($entities as $entity) {
                 $e = $fullClass::fromArray($entity);
                 $dbEntity->saveEntity($e);
             }
+            return count($entities);
         } catch (Exception $e) {
             throw new Exception("Importing file $fileName as $className failed.", 0, $e);
         }
@@ -56,6 +59,16 @@ class ImportController extends BaseController {
         switch ($target) {
             case 'CARDHOLDERS':
                 return 'CardHolder';
+            case 'STUDENTS':
+                return 'Student';
+            case 'TUTORS':
+                return 'Tutor';
+            case 'EMPLOYEES':
+                return 'Employee';
+            case 'COURSES':
+                return 'Course';
+            case 'PASSAGES':
+                return 'Passage';
         }
         throw new Exception('Unhandled import target: '.$target);
     }

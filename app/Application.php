@@ -7,6 +7,11 @@ use Exception;
 require_once ('app/RequestHandler.php');
 require_once ('dao/Database.php');
 require_once ('dao/CardHolder.php');
+require_once ('dao/Course.php');
+require_once ('dao/Employee.php');
+require_once ('dao/Passage.php');
+require_once ('dao/Student.php');
+require_once ('dao/Tutor.php');
 require_once ('controllers/ImportController.php');
 
 class Application {
@@ -48,6 +53,11 @@ class Application {
         }
 
 	    $this->defineDBEntity('CardHolder', 'CARDHOLDERS');
+	    $this->defineDBEntity('Course', 'COURSES');
+	    $this->defineDBEntity('Employee', 'EMPLOYEES');
+	    $this->defineDBEntity('Passage', 'PASSAGES');
+	    $this->defineDBEntity('Student', 'STUDENTS');
+	    $this->defineDBEntity('Tutor', 'TUTORS');
         $this->requestHandler->registerController("/Import.php", new ImportController($this));
     }
 

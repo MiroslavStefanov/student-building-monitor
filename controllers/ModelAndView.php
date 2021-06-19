@@ -19,8 +19,6 @@ class ModelAndView {
         }
 
         $config = $application->getConfig();
-        $this->model['resources'] = '../'.$config['app_pages'].'/';
-        $this->model['actions'] = '.'.$config['app_root'].$config['app_endpoints'].'/';
         include_once ($config['app_pages'].'/'.$this->view);
     }
 
