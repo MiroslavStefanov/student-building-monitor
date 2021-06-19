@@ -2,7 +2,10 @@
 
 namespace monitor;
 
+require_once ('dao/BaseDAO.php');
+
 class CardHolder {
+    use FromArray;
 	public $ID;
 	public $NAME;
 	public $BIRTH_DATE;

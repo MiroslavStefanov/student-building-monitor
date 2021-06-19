@@ -18,7 +18,6 @@ class Application {
 	public function __construct($config) {
 	    $this->config = $config;
 	    $this->requestHandler = new RequestHandler();
-	    $this->requestHandler->registerController("/Import.php", new ImportController($this));
 	    $this->initialize();
     }
 	
@@ -48,9 +47,8 @@ class Application {
 	        $this->createDB();
         }
 
-//	    $this->defineDBEntity('IdCounter', 'ID_COUNTERS');
 	    $this->defineDBEntity('CardHolder', 'CARDHOLDERS');
-	    var_dump($this->entities);
+        $this->requestHandler->registerController("/Import.php", new ImportController($this));
     }
 
     private function defineDBEntity(string $className, string $table) {
