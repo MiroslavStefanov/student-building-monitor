@@ -1,6 +1,10 @@
 <?php
-require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/controllers/BaseController.php');
-require_once ($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/controllers/ModelAndView.php');
+
+namespace monitor;
+use Exception;
+
+require_once ('controllers/BaseController.php');
+require_once ('controllers/ModelAndView.php');
 
 class RequestHandler {
     private $controllers;
@@ -13,7 +17,7 @@ class RequestHandler {
         $this->controllers[$path] = $controller;
     }
 
-    public function handleRequest(string $path) {
+    public function handleRequest(string $path, $application) {
         if(!array_key_exists($path, $this->controllers)) {
             throw new Exception("Unresolved request path: $path");
         }
@@ -29,7 +33,7 @@ class RequestHandler {
             throw new Exception("Unhandled http method $method");
         }
 
-        $result->render();
+        $result->render($application);
     }
 }
 ?>

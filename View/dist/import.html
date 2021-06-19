@@ -5,7 +5,7 @@
 	  <meta http-equiv="x-ua-compatible" content="ie=edge">
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	  <title>Student Building Monitor</title>
-	  <link rel="stylesheet" href="assets/css/app.css">
+	  <link rel="stylesheet" href="<?php echo $this->get('resources')?>assets/css/app.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
 	</head>
 	<body>
@@ -34,7 +34,7 @@
 			<div class="app-dashboard-body off-canvas-wrapper">
         <div class="translucent-form-overlay2">
           <p>Тук можете да попълвате данни в базата. За тази цел изберете към коя таблица се отнасят данните и прикачете съответния .csv файл.</p>
-          <form>
+          <form method="post" action="Import.php" enctype="multipart/form-data">
             <h3>Импорт на данни</h3>
             <div class="row columns">
               <label>Избор на таблица
@@ -50,15 +50,13 @@
                 </select>
               </label>
               <label for="csvFileUpload" class="button">Избери файл</label>
-              <input type="file" id="csvFileUpload" class="show-for-sr" accept=".csv" name="filename">
+              <input type="file" id="csvFileUpload" class="show-for-sr" accept=".csv" name="file">
             </div>
-            <button type="button" class="primary button expanded search-button">
-              Импортирай
-            </button>
+            <input type="submit" name="submit" value="Импортирай" class="primary button expanded search-button" />
           </form>
         </div>
 			</div>
 		</div>
-<script src="assets/js/app.js"></script>
+<script src="<?php $this->get('resources')?>assets/js/app.js"></script>
 	</body>
 </html>

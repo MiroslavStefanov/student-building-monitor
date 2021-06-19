@@ -1,6 +1,6 @@
 <?php
 
-namespace utils;
+namespace monitor;
 use Exception;
 
 function readFile($fileName) : string {

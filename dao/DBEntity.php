@@ -1,6 +1,12 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/student-building-monitor/dao/IdCounter.php');
+namespace monitor;
+
+use PDO;
+use PDOException;
+
+require_once ('dao/IdCounter.php');
+require_once ('dao/CardHolder.php');
 
 class DBEntity {
 	
@@ -16,7 +22,7 @@ class DBEntity {
 			$this->table = $tableName;
 			$this->database = $database;
 			$this->idEntity = $idEntity;
-			
+
 			$classReflection = get_class_vars($class);
 			foreach($classReflection as $property => $value) {
 				array_push($this->columns, $property);
@@ -25,9 +31,8 @@ class DBEntity {
 	
 	public function getEntity(string $id) {
 		try {
-			$db = $this->getDBConntection();
 			$sql   = "SELECT * FROM {$this->table} where id = {$id}";
-			$query = $db->query($sql) or die("failed!");
+			$query = $this->database->query($sql) or die("failed!");
 			$query->setFetchMode(PDO::FETCH_CLASS, $this->className);
 			$result = $query->fetch();
 			if(!$result){ // not found
@@ -44,9 +49,8 @@ class DBEntity {
 	
 	public function getAllEntities() {
 		try {
-			$db = $this->getDBConntection();
 			$sql   = "SELECT * FROM {$this->table}";
-			$query = $db->query($sql) or die("failed!");
+			$query = $this->database->query($sql) or die("failed!");
 			$query->setFetchMode(PDO::FETCH_CLASS, $this->className);
 			$result = $query->fetchAll();
 			return $result;
@@ -77,12 +81,11 @@ class DBEntity {
 		}
 		
 		try {
-			$db = $this->getDBConntection();
 			$values = array_reduce($this->columns, function($result, $value) use($entity) { 
 					$result[$value] = $entity->$value; 
 					return $result;
 				}, []);
-			$result = $db->prepare($sql)->execute($values);
+			$result = $this->database->prepare($sql)->execute($values);
 			if($result && $isNewEntity) {
 				$idCounter->NEXT_ID = $idCounter->NEXT_ID + 1;
 				$this->idEntity->saveEntity($idCounter);
@@ -100,22 +103,13 @@ class DBEntity {
 		$sql = "DELETE FROM $this->table WHERE id = $id";
 		
 		try {
-			$db = $this->getDBConntection();
-			$result = $db->prepare($sql)->execute();
+			$result = $this->database->prepare($sql)->execute();
 			return $result != false;
 		} catch (PDOException $e){
 			$error_msg = $e->getMessage();
             echo $error_msg;
 			return false;
 		}
-	}
-	
-	private function getDBConntection() {
-		if($this->database == NULL) {
-			die ("Database not found");
-		}
-		
-		return $this->database;
 	}
 	
 	private function getIdCounter() : IdCounter {
