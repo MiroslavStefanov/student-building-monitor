@@ -7,6 +7,7 @@
 	  <title>Student Building Monitor</title>
 	  <link rel="stylesheet" href="assets/css/app.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+    <script type="text/javascript" src="assets/js/charts.js"></script>
 	</head>
 	<body>
 		<div class="app-dashboard shrink-medium">
@@ -19,7 +20,7 @@
           </a>
         </div>
         <div class="columns shrink app-dashboard-top-bar-actions">
-          <a href="import.html" height="30" width="30" alt="" class="app-dashboard-logo">
+          <a href="Import.php" height="30" width="30" alt="" class="app-dashboard-logo">
             <i class="medium fi-plus"></i>
             Импорт
           </a>
@@ -57,11 +58,13 @@
         <div class="app-dashboard-body-content off-canvas-content" data-off-canvas-content>
           <h2 class="text-center">Lorem Ipsum</h2>
           <p>ebasi zmqta</p>
+          <p id="p1"></p>
           <div id="chart-container">
               <canvas id="graphCanvas"></canvas>
           </div>
 
           <script>
+              test();
 
               const labels = [
                 'January',
