@@ -60,6 +60,7 @@ class Application {
 	    $this->defineDBEntity('Passage', 'PASSAGES');
 	    $this->defineDBEntity('Student', 'STUDENTS');
 	    $this->defineDBEntity('Tutor', 'TUTORS');
+	    $this->defineDBEntity('DBEnum', 'NOM_CARDHOLDER_TYPE');
         $this->requestHandler->registerController("/Import.php", new ImportController($this));
         $this->requestHandler->registerController("/Index.php", new IndexController($this));
         $this->requestHandler->registerController("/", new IndexController($this));
