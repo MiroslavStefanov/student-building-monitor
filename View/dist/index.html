@@ -7,14 +7,13 @@
 	  <title>Student Building Monitor</title>
 	  <link rel="stylesheet" href="assets/css/app.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
-    <script type="text/javascript" src="assets/js/charts.js"></script>
 	</head>
 	<body>
 		<div class="app-dashboard shrink-medium">
       <div class="row expanded app-dashboard-top-nav-bar">
         <div class="columns medium-2">
           <button data-toggle="app-dashboard-sidebar" class="menu-icon hide-for-medium"></button>
-          <a href="index.html" class="app-dashboard-logo">
+          <a href="Index.php" class="app-dashboard-logo">
             <i class="medium fi-monitor"></i>
             Монитор
           </a>
@@ -26,7 +25,7 @@
           </a>
         </div>
         <div class="columns app-dashboard-top-bar-actions">
-          <a href="about.html" height="30" width="30" alt="" class="app-dashboard-logo">
+          <a href="About.php" height="30" width="30" alt="" class="app-dashboard-logo">
             <i class="medium fi-info"></i>
             За нас
           </a>
@@ -58,13 +57,11 @@
         <div class="app-dashboard-body-content off-canvas-content" data-off-canvas-content>
           <h2 class="text-center">Lorem Ipsum</h2>
           <p>ebasi zmqta</p>
-          <p id="p1"></p>
           <div id="chart-container">
               <canvas id="graphCanvas"></canvas>
           </div>
 
           <script>
-              test();
 
               const labels = [
                 'January',
