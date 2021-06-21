@@ -19,10 +19,20 @@ class ModelAndView {
         }
 
         $config = $application->getConfig();
+        $this->attachDefaultModel($config);
         include_once ($config['app_pages'].'/'.$this->view);
     }
 
     private function get(string $property) {
         echo $this->model[$property];
+    }
+
+    private function attachDefaultModel($config) {
+        $this->model['url'] = $config['web_host']
+            .':'
+            .$config['web_port']
+            .$config['app_root']
+            .$config['app_endpoints']
+            .'/';
     }
 }
