@@ -16,8 +16,8 @@ class JsonObject extends ModelAndView {
             return;
         }
 
-        header('Content-type: application/json');
-        $result = json_encode($this->object);
+        header('Content-type: application/json; charset=utf-8');
+        $result = json_encode($this->object,JSON_UNESCAPED_UNICODE);
         echo $result;
     }
 }

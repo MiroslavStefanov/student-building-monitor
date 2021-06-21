@@ -7,6 +7,7 @@
 	  <title>Student Building Monitor</title>
 	  <link rel="stylesheet" href="assets/css/app.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+    <script type="text/javascript" src="assets/js/charts.js"></script>
 	</head>
 	<body>
 		<div class="app-dashboard shrink-medium">
@@ -55,41 +56,52 @@
         </div>
       
         <div class="app-dashboard-body-content off-canvas-content" data-off-canvas-content>
-          <h2 class="text-center">Lorem Ipsum</h2>
-          <p>ebasi zmqta</p>
-          <div id="chart-container">
-              <canvas id="graphCanvas"></canvas>
+          <div id="chart-container" >
+              <canvas id="graphCanvas" width="500px" height="300px"></canvas>
           </div>
 
           <script>
+              function draw_chart(data){
+                  const labels = data.map(x => x["LABEL"]);
+                  const counts = data.map(x => parseInt(x["COUNT"]));
 
-              const labels = [
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-              ];
-              const data = {
-                labels: labels,
-                datasets: [{
-                  label: 'My First dataset',
-                  backgroundColor: 'rgb(255, 99, 132)',
-                  borderColor: 'rgb(255, 99, 132)',
-                  data: [0, 10, 5, 2, 20, 30, 45],
-                }]
-              };
-              const config = {
-                type: 'line',
-                data,
-                options: {}
-              };
+                  for (var random_colors=[],i=0;i<counts.length;++i) random_colors[i]='#'+(Math.random()*0xFFFFFF<<0).toString(16);
 
-              var myChart = new Chart(
-              document.getElementById('graphCanvas'),
-              config
-              );
+                  const data1 = {
+                    labels: labels,
+                    datasets: [{
+                      backgroundColor: random_colors,
+                      data: counts,
+                    }]
+                  };
+
+                  const config = {
+                  type: 'bar',
+                  data: data1,
+                  options: {
+                  plugins: {
+                      legend: {
+                          display: false
+                      }
+                  },
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero:true
+                          }
+                      }]
+                  }}
+                  };
+
+                  var barChart = new Chart(
+                  document.getElementById('graphCanvas'),
+                  config
+                  );
+              }
+
+              test(draw_chart);
           </script>
         </div>
 			</div>
