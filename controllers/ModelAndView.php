@@ -28,7 +28,8 @@ class ModelAndView {
     }
 
     private function attachDefaultModel($config) {
-        $this->model['url'] = $config['web_host']
+        $this->model['url'] = 'http://'
+            . $config['web_host']
             .':'
             .$config['web_port']
             .$config['app_root']

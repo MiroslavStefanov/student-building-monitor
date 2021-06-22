@@ -66,7 +66,7 @@
           <script>
               function onFiltersChanged(){
                 var element = document.querySelector('input[name="filter"]:checked');
-                  requestChangeFilters(data => chartController.updateData(data), element.id);
+                  requestChangeFilters(data => chartController.updateData(data), element.id, "<?php $this->get('url')?>Cardholders.php");
               }
               onFiltersChanged();
 

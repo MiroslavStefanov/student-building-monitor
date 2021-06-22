@@ -1,5 +1,5 @@
-function requestChangeFilters(callback, inputValue){
-    var url = new URL('http://localhost/student-building-monitor/endpoints/Cardholders.php');
+function requestChangeFilters(callback, inputValue, url){
+    var url = new URL(url);
     var params = {sortBy : inputValue};
     url.search = new URLSearchParams(params).toString();
     fetch(url, {
