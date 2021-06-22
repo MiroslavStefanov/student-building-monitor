@@ -29,13 +29,13 @@ class Application {
 	    $this->initialize();
     }
 	
-	public function getDBEntity(string $className) {
-		$doesExist = array_key_exists($className, $this->entities);
+	public function getDBEntity(string $table) {
+		$doesExist = array_key_exists($table, $this->entities);
 		if($doesExist) {
-			return $this->entities[$className];
+			return $this->entities[$table];
 		}
 
-		throw new Exception("Unhandled db entity for class $className");
+		throw new Exception("Unhandled db entity for table $table");
 	}
 
 	public function handleReqeust() {
@@ -62,6 +62,7 @@ class Application {
 	    $this->defineDBEntity('Student', 'STUDENTS');
 	    $this->defineDBEntity('Tutor', 'TUTORS');
 	    $this->defineDBEntity('DBEnum', 'NOM_CARDHOLDER_TYPE');
+	    $this->defineDBEntity('DBEnum', 'NOM_ACADEMIC_DEGREE');
         $this->requestHandler->registerController("/Import.php", new ImportController($this));
         $this->requestHandler->registerController("/Index.php", new IndexController($this));
         $this->requestHandler->registerController("/", new IndexController($this));
@@ -72,7 +73,7 @@ class Application {
     private function defineDBEntity(string $className, string $table) {
         $db = $this->connectDB();
         $entity = $db->makeEntity($className, $table);
-        $this->entities[$className] = $entity;
+        $this->entities[$table] = $entity;
     }
 
     private function createDB() {

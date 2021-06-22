@@ -30,6 +30,10 @@ class DBEntity {
 			}
     }
 
+    public function getClass() : string {
+        return "monitor\\".$this->className;
+    }
+
     public function innerJoin(string $alias) : string {
         return "INNER JOIN $this->table AS $alias";
     }

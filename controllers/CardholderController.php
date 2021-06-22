@@ -12,29 +12,52 @@ require_once ('dao/CardHolder.php');
 require_once ('dao/DBEnum.php');
 
 class CardholderController extends BaseController {
+    const GROUP_INPUT = 'sortBy';
 
     private $entity = NULL;
-    private $typeEntity = NULL;
 
     public function __construct($application)
     {
         parent::__construct($application);
-
-        $this->entity = $application->getDBEntity('CardHolder');
-        $this->typeEntity = $application->getDBEntity('DBEnum');
+        $this->entity = $application->getDBEntity('CARDHOLDERS');
     }
 
     public function get() : ModelAndView {
-        $countData = $this->getCounts();
+        if(!isset($_GET[self::GROUP_INPUT])) {
+            return new JsonObject(NULL);
+        }
+
+        $grouping = $_GET[self::GROUP_INPUT];
+        $countData = $this->getCounts($grouping);
         return new JsonObject($countData);
     }
 
-    private function getCounts() {
+    private function getCounts($grouping) {
+        $groupParameters = $this->getGroupParameters($grouping);
         $columns = "T.NAME as LABEL, COUNT(C.ID) AS COUNT";
-        $joins = ['AS C ', $this->typeEntity->innerJoin('T')." ON C.TYPE = T.ID "];
-        $groupBy = "C.TYPE";
+        $joinColumn = $groupParameters['column'];
+        $joins = ['AS C ', $groupParameters['entity']->innerJoin('T')." ON C.$joinColumn = T.ID "];
+        $groupBy = "C.$joinColumn";
         $result = $this->entity->select($columns, $joins, '', $groupBy);
         return $result;
+    }
+
+    private function getGroupParameters($grouping) {
+        $column = '';
+        $entity = NULL;
+        switch ($grouping) {
+            case "byType":
+                $column = 'TYPE';
+                $entity = $this->application->getDBEntity('NOM_CARDHOLDER_TYPE');
+                break;
+            case "byDegree":
+                $column = 'ACADEMIC_DEGREE';
+                $entity = $this->application->getDBEntity('NOM_ACADEMIC_DEGREE');
+                break;
+            default:
+                throw new Exception("Unhandled cardholders grouping $grouping");
+        }
+        return ['column' => $column, 'entity' => $entity];
     }
 
 }

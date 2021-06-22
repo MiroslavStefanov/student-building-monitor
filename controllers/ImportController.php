@@ -30,23 +30,21 @@ class ImportController extends BaseController {
             return ModelAndView::withModelAndView(['errors' => [$_FILES["file"]["error"]]], 'import.html');
         }
 
-        $target = $_POST[self::TARGET_INPUT];
+        $targetTable = $_POST[self::TARGET_INPUT];
         $fileName = $fileProperties["tmp_name"];
-        $targetClass = $this->getImportTargetClass($target);
-        $importCount = $this->importFile($fileName, $targetClass);
+        $importCount = $this->importFile($fileName, $targetTable);
         echo "Rows imported: $importCount<br/>";
         return ModelAndView::withModelAndView(["file" => $fileName],'import.html');
     }
 
-    private function importFile($fileName, $className) : int {
-        echo "Importing file $fileName into class $className<br/>";
+    private function importFile($fileName, $table) : int {
+        echo "Importing file $fileName into table $table<br/>";
         try {
             $entities = readCSVEntities($fileName);
-            $dbEntity = $this->application->getDBEntity($className);
-            $fullClass = 'monitor\\'.$className;
-            $savedCount = 0;
+            $dbEntity = $this->application->getDBEntity($table);
+            $className = $dbEntity->getClass();
             foreach ($entities as $entity) {
-                $e = $fullClass::fromArray($entity);
+                $e = $className::fromArray($entity);
                 $dbEntity->saveEntity($e);
             }
             return count($entities);

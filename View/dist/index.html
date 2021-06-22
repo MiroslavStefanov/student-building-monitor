@@ -40,15 +40,15 @@
           <div class="app-dashboard-sidebar-inner">
             <div class="menu vertical">
               <label class="container">По тип картоносител
-                <input type="radio" checked="checked" name="filter" id="byType" onchange="myFunction()">
+                <input type="radio" checked="checked" name="filter" id="byType" onchange="onFiltersChanged()">
                 <span class="checkmark"></span>
               </label>
               <label class="container">По образование
-                <input type="radio" name="filter" id="byDegree" onchange="myFunction()">
+                <input type="radio" name="filter" id="byDegree" onchange="onFiltersChanged()">
                 <span class="checkmark"></span>
               </label>
               <label class="container">Студенти по специланост
-                <input type="radio" name="filter" id="bySpec" onchange="myFunction()">
+                <input type="radio" name="filter" id="bySpec" onchange="onFiltersChanged()">
                 <span class="checkmark"></span>
               </label>
             </div>
@@ -61,53 +61,11 @@
           </div>
 
           <script>
-              function myFunction(){
+              function onFiltersChanged(){
                 var element = document.querySelector('input[name="filter"]:checked');
-                console.log(element.id);
+                  requestChangeFilters(data => chartController.updateData(data), element.id);
               }
-
-
-              function draw_chart(data){
-                  const labels = data.map(x => x["LABEL"]);
-                  const counts = data.map(x => parseInt(x["COUNT"]));
-
-                  for (var random_colors=[],i=0;i<counts.length;++i) random_colors[i]='#'+(Math.random()*0xFFFFFF<<0).toString(16);
-
-                  const data1 = {
-                    labels: labels,
-                    datasets: [{
-                      backgroundColor: random_colors,
-                      data: counts,
-                    }]
-                  };
-
-                  const config = {
-                  type: 'bar',
-                  data: data1,
-                  options: {
-                  plugins: {
-                      legend: {
-                          display: false
-                      }
-                  },
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scales: {
-                      yAxes: [{
-                          ticks: {
-                              beginAtZero:true
-                          }
-                      }]
-                  }}
-                  };
-
-                  var barChart = new Chart(
-                  document.getElementById('graphCanvas'),
-                  config
-                  );
-              }
-
-              test(draw_chart, '');
+              onFiltersChanged();
           </script>
         </div>
 			</div>
