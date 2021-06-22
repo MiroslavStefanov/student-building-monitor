@@ -2,7 +2,6 @@ function requestChangeFilters(callback, inputValue){
     var url = new URL('http://localhost/student-building-monitor/endpoints/Cardholders.php');
     var params = {sortBy : inputValue};
     url.search = new URLSearchParams(params).toString();
-    console.log(url);
     fetch(url, {
         method: 'get',
         // may be some code of fetching comes here
@@ -53,6 +52,7 @@ class ChartController {
             document.getElementById(this.elementId),
             config
         );
+        console.log(this.chart.chartArea);
     }
 
     prepareBarData(input) {
