@@ -40,15 +40,15 @@
           <div class="app-dashboard-sidebar-inner">
             <div class="menu vertical">
               <label class="container">По тип картоносител
-                <input type="radio" checked="checked" name="filter">
+                <input type="radio" checked="checked" name="filter" id="byType" onchange="myFunction()">
                 <span class="checkmark"></span>
               </label>
               <label class="container">По образование
-                <input type="radio" name="filter">
+                <input type="radio" name="filter" id="byDegree" onchange="myFunction()">
                 <span class="checkmark"></span>
               </label>
               <label class="container">Студенти по специланост
-                <input type="radio" name="filter">
+                <input type="radio" name="filter" id="bySpec" onchange="myFunction()">
                 <span class="checkmark"></span>
               </label>
             </div>
@@ -61,6 +61,12 @@
           </div>
 
           <script>
+              function myFunction(){
+                var element = document.querySelector('input[name="filter"]:checked');
+                console.log(element.id);
+              }
+
+
               function draw_chart(data){
                   const labels = data.map(x => x["LABEL"]);
                   const counts = data.map(x => parseInt(x["COUNT"]));
@@ -101,7 +107,7 @@
                   );
               }
 
-              test(draw_chart);
+              test(draw_chart, '');
           </script>
         </div>
 			</div>
