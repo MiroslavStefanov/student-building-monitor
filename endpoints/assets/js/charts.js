@@ -36,7 +36,12 @@ class ChartController {
                 plugins: {
                     legend: {
                         display: false
-                    }
+                    },
+                    beforeDraw: function(chartInstance) {
+                    var ctx = chartInstance.chart.ctx;
+                    ctx.fillStyle = "white";
+                    ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
+                    } // doesn't work for some reason
                 },
                 responsive: true,
                 maintainAspectRatio: false,
@@ -52,7 +57,6 @@ class ChartController {
             document.getElementById(this.elementId),
             config
         );
-        console.log(this.chart.chartArea);
     }
 
     prepareBarData(input) {

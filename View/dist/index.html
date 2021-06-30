@@ -61,7 +61,7 @@
           <div id="chart-container" >
               <canvas id="graphCanvas" width="500px" height="300px"></canvas>
           </div>
-          <button onclick="saveAsPDF();" class="button">Експорт</button>
+          <button onclick="saveAsPDF();" class="button">Експорт в PDF</button>
 
           <script>
               function onFiltersChanged(){
@@ -72,15 +72,12 @@
 
               function saveAsPDF() {
                 var sortBy = document.querySelector('input[name="filter"]:checked').id;
-                   html2canvas(document.getElementById("chart-container"), {
-                      onrendered: function(canvas) {
-                         var img = canvas.toDataURL();
-                         var doc = new jsPDF();
-                         doc.addImage(img, 0, 0);
-                         doc.save('Statistics_' + sortBy + '.pdf');
-                      }
-                   });
-                }
+                var doc = new jsPDF("l", "mm", "a4");
+                var canvas = document.getElementById("chart-container");
+                doc.addHTML(canvas, function(){
+                doc.save('Statistics_' + sortBy + '.pdf');
+                })
+               }
           </script>
         </div>
 			</div>
