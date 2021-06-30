@@ -31,7 +31,7 @@ class DBEntity {
     }
 
     public function getClass() : string {
-        return "monitor\\".$this->className;
+        return $this->className;
     }
 
     public function innerJoin(string $alias) : string {
