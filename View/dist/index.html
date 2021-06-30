@@ -61,7 +61,17 @@
           <div id="chart-container" >
               <canvas id="graphCanvas" width="500px" height="300px"></canvas>
           </div>
-          <button onclick="saveAsPDF();" class="button">Експорт в PDF</button>
+          
+          <button class="btn">Експорт</button>
+          <div class="dropdown">
+            <button class="btn" style="border-left:1px solid navy">
+              <i class="small fi-arrow-down"></i>
+            </button>
+            <div class="dropdown-content">
+              <button onclick="saveAsPDF();">PDF</button>
+              <button>JSON</button>
+            </div>
+          </div>
 
           <script>
               function onFiltersChanged(){
