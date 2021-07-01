@@ -31,22 +31,13 @@ class Database {
 	}
 	
 	public function executeScript(string $filename) {
-        echo "Executing script $filename<br/>";
         try {
             $filename = $this->config['app_root'].'/'.$filename;
 			$sql = readFile($filename);
 			$result = $this->getConntection()->exec($sql);
-
-			if($result === false) {
-				echo "Fail<br/>";
-			} else {
-			    echo "Success<br/>";
-            }
 			
 		} catch (Exception $e){
-			$error_msg = $e->getMessage();
-            echo "Fail<br/>";
-            echo "$error_msg<br/>";
+			throw $e;
 		}
 	}
 		
@@ -65,7 +56,6 @@ class Database {
             $this->connection  = new PDO($url, $username, $password);
         }catch(PDOException $e){
             $error_msg = $e->getMessage();
-            echo $error_msg;
 			die("Couldn't connect to database! Error: $error_msg");
         }
 
