@@ -17,6 +17,7 @@ class ChartController {
     constructor(elementId) {
         this.elementId = elementId;
         this.chart = null
+        this.data = null;
     }
 
     updateData (data) {
@@ -25,6 +26,7 @@ class ChartController {
             this.chart.destroy();
         }
         this.createChart('bar', data);
+        this.data = data;
     }
 
     createChart (type, data) {

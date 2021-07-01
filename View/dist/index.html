@@ -98,26 +98,12 @@
               }
 
               function saveAsJSON() {
-                // TODO: get data from php
-                // var data = encode( JSON.stringify(dataFromPHP));
-                var data = encode( JSON.stringify({
-                  name: 'Example object',
-                  child: {
-                    name: 'Nested thing'
-                  }
-                }, null, 4) );
-
-                var blob = new Blob( [ data ], {
-                  type: 'application/octet-stream'
-                });
-
-                url = URL.createObjectURL( blob );
-                var link = document.createElement( 'a' );
-                link.setAttribute( 'href', url );
-                link.setAttribute( 'download', 'example.json' );
-                var event = document.createEvent( 'MouseEvents' );
-                event.initMouseEvent( 'click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-                link.dispatchEvent( event );
+                var sortBy = document.querySelector('input[name="filter"]:checked').id;
+                var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(chartController.data));
+                var dlAnchorElem = document.createElement( 'a' );
+                dlAnchorElem.setAttribute("href",     dataStr     );
+                dlAnchorElem.setAttribute("download", 'Statistics_' + sortBy + '.json');
+                dlAnchorElem.click();
               }
 
           </script>
