@@ -39,7 +39,7 @@ class DBEntity {
     }
 
 	public function getEntity(string $id) {
-        $sql   = "SELECT * FROM {$this->table} where id = {$id}";
+        $sql   = "SELECT * FROM {$this->table} where id = $id";
         $result = $this->executeStatement($sql, function ($statement) {
             $result = $statement->execute();
             if($result === false) {
@@ -65,7 +65,6 @@ class DBEntity {
 	}
 
     public function saveEntity($entity) {
-		$sql = '';
 		$idCounter = false;
 		
 		$isNewEntity = !property_exists($entity, 'ID') 
@@ -100,20 +99,43 @@ class DBEntity {
 		$this->executeStatement($sql, function ($s) {return $s->execute();});
 	}
 
-	public function select(string $columns, array $joins, string $where, string $groupBy) : array {
+	public function createSelectStatement(string $columns, array $joins, string $where, string $groupBy, string $orderBy, int $limit = 0) : string {
         $sql = "SELECT $columns FROM $this->table ";
 
         if(!empty($joins)) {
             $sql .= implode(" ", $joins);
+        } else{
+            $sql .= ' ';
         }
 
         if(!empty($where)) {
             $sql .= "WHERE $where ";
-        }
-        if (!empty($groupBy)) {
-            $sql .= "GROUP BY $groupBy";
+        }else{
+            $sql .= ' ';
         }
 
+        if (!empty($groupBy)) {
+            $sql .= "GROUP BY $groupBy ";
+        }else{
+            $sql .= '';
+        }
+
+        if(!empty($orderBy)) {
+            $sql .= "ORDER BY $orderBy ";
+        }else{
+            $sql .= ' ';
+        }
+
+        if($limit > 0) {
+            $sql .= "LIMIT ".strval($limit);
+        }
+
+        return $sql;
+    }
+
+	public function select(string $columns, array $joins, string $where, string $groupBy, string $orderBy, int $limit = 0) : array {
+        $sql = $this->createSelectStatement($columns, $joins, $where, $groupBy, $orderBy, $limit);
+        writeFile("/student-building-monitor/logs/log.txt", $sql);
         $result = $this->executeStatement($sql, function ($s) {
             $result = $s->execute();
             if($result === false) {

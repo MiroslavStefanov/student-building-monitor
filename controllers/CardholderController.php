@@ -15,11 +15,13 @@ class CardholderController extends BaseController {
     const GROUP_INPUT = 'sortBy';
 
     private $entity = NULL;
+    private $passagesEntity = NULL;
 
     public function __construct($application)
     {
         parent::__construct($application);
         $this->entity = $application->getDBEntity('CARDHOLDERS');
+        $this->passagesEntity = $application->getDBEntity('PASSAGES');
     }
 
     public function get() : ModelAndView {
@@ -36,10 +38,37 @@ class CardholderController extends BaseController {
         $groupParameters = $this->getGroupParameters($grouping);
         $columns = "T.NAME as LABEL, COUNT(C.ID) AS COUNT";
         $joinColumn = $groupParameters['column'];
-        $joins = ['AS C ', $groupParameters['entity']->innerJoin('T')." ON C.$joinColumn = T.ID "];
+        $lastPasses = $this->getLastTimePassesQuery();
+        $enteringPasses = $this->getEnteringPassesQuery();
+        $joins = [
+            'AS C ',
+            $groupParameters['entity']->innerJoin('T')." ON C.$joinColumn = T.ID ",
+            "INNER JOIN ($lastPasses) as LAST_TIMES on C.ID = LAST_TIMES.CARDHOLDER",
+            "INNER JOIN ($enteringPasses) as p2 on LAST_TIMES.LAST_TIME = p2.CT and LAST_TIMES.CARDHOLDER = p2.CH"
+        ];
         $groupBy = "C.$joinColumn";
-        $result = $this->entity->select($columns, $joins, '', $groupBy);
+        $result = $this->entity->select($columns, $joins, '', $groupBy, '');
         return $result;
+    }
+
+    private function getLastTimePassesQuery() {
+        return $this->passagesEntity->createSelectStatement(
+            "max(p.DATE_TIME) AS LAST_TIME, p.CARDHOLDER_ID AS CARDHOLDER",
+            ["AS P "],
+            '',
+            'p.CARDHOLDER_ID',
+            ''
+        );
+    }
+
+    private function getEnteringPassesQuery() {
+        return $this->passagesEntity->createSelectStatement(
+            "p2.DATE_TIME AS CT, p2.CARDHOLDER_ID as CH",
+            ["AS p2 "],
+            'p2.ENTERING = 1',
+            '',
+            ''
+        );
     }
 
     private function getGroupParameters($grouping) {
