@@ -15,6 +15,7 @@ require_once ('dao/Tutor.php');
 require_once ('controllers/ImportController.php');
 require_once ('controllers/IndexController.php');
 require_once ('controllers/CardholderController.php');
+require_once ('controllers/StudentController.php');
 require_once ('controllers/AboutController.php');
 
 class Application {
@@ -63,11 +64,13 @@ class Application {
 	    $this->defineDBEntity('Tutor', 'TUTORS');
 	    $this->defineDBEntity('DBEnum', 'NOM_CARDHOLDER_TYPE');
 	    $this->defineDBEntity('DBEnum', 'NOM_ACADEMIC_DEGREE');
-        $this->requestHandler->registerController("/Import.php", new ImportController($this));
-        $this->requestHandler->registerController("/Index.php", new IndexController($this));
-        $this->requestHandler->registerController("/", new IndexController($this));
-        $this->requestHandler->registerController("/Cardholders.php", new CardholderController($this));
-        $this->requestHandler->registerController("/About.php", new AboutController($this));
+
+      $this->requestHandler->registerController("/Import.php", new ImportController($this));
+      $this->requestHandler->registerController("/Index.php", new IndexController($this));
+      $this->requestHandler->registerController("/", new IndexController($this));
+      $this->requestHandler->registerController("/Cardholders.php", new CardholderController($this));
+			$this->requestHandler->registerController("/Students.php", new StudentController($this));
+      $this->requestHandler->registerController("/About.php", new AboutController($this));
     }
 
     private function defineDBEntity(string $className, string $table) {

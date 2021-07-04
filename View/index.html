@@ -76,7 +76,8 @@
           <script>
               function onFiltersChanged(){
                 var element = document.querySelector('input[name="filter"]:checked');
-                requestChangeFilters(data => chartController.updateData(data), element.id, "<?php $this->get('url')?>Cardholders.php");
+                urlPhp = element.id === "bySpec" ? "<?php $this->get('url')?>Students.php" : "<?php $this->get('url')?>Cardholders.php";
+                requestChangeFilters(data => chartController.updateData(data), element.id, urlPhp);
               }
               onFiltersChanged();
 
