@@ -15,11 +15,15 @@ class StudentController extends BaseController {
     const GROUP_INPUT = 'sortBy';
 
     private $entity = NULL;
+    private $cardholderEntity = NULL;
+    private $passagesEntity = NULL;
 
     public function __construct($application)
     {
         parent::__construct($application);
         $this->entity = $application->getDBEntity('STUDENTS');
+        $this->cardholderEntity = $application->getDBEntity('CARDHOLDERS');
+        $this->passagesEntity = $application->getDBEntity('PASSAGES');
     }
 
     public function get() : ModelAndView {
@@ -36,10 +40,45 @@ class StudentController extends BaseController {
         $groupParameters = $this->getGroupParameters($grouping);
         $columns = "SP.NAME as LABEL, COUNT(ST.ID) AS COUNT";
         $joinColumn = $groupParameters['column'];
-        $joins = ['AS ST ', $groupParameters['entity']->innerJoin('SP')." ON ST.$joinColumn = SP.ID "];
+        $activeCardholders = $this->getActiveCardholders();
+        $joins = ['AS ST ', $groupParameters['entity']->innerJoin('SP')." ON ST.$joinColumn = SP.ID ",
+                                             "INNER JOIN ($activeCardholders) as AC ON AC.CH = ST.ID "];
         $groupBy = "ST.$joinColumn";
         $result = $this->entity->select($columns, $joins, '', $groupBy);
         return $result;
+    }
+
+    private function getActiveCardholders() {
+        $columns = "C.ID as CH";
+        $lastPasses = $this->getLastTimePassesQuery();
+        $enteringPasses = $this->getEnteringPassesQuery();
+        $joins = [
+            'AS C ',
+            "INNER JOIN ($lastPasses) as LAST_TIMES on C.ID = LAST_TIMES.CARDHOLDER",
+            "INNER JOIN ($enteringPasses) as p2 on LAST_TIMES.LAST_TIME = p2.CT and LAST_TIMES.CARDHOLDER = p2.CH"
+        ];
+        $result = $this->cardholderEntity->createSelectStatement($columns, $joins, '');
+        return $result;
+    }
+
+    private function getLastTimePassesQuery() {
+        return $this->passagesEntity->createSelectStatement(
+            "max(p.DATE_TIME) AS LAST_TIME, p.CARDHOLDER_ID AS CARDHOLDER",
+            ["AS P "],
+            '',
+            'p.CARDHOLDER_ID',
+            ''
+        );
+    }
+
+    private function getEnteringPassesQuery() {
+        return $this->passagesEntity->createSelectStatement(
+            "p2.DATE_TIME AS CT, p2.CARDHOLDER_ID as CH",
+            ["AS p2 "],
+            'p2.ENTERING = 1',
+            '',
+            ''
+        );
     }
 
     private function getGroupParameters($grouping) {
