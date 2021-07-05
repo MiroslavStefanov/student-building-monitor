@@ -27,6 +27,10 @@ class ModelAndView {
         echo $this->model[$property];
     }
 
+    private function has(string $property) {
+        return isset($this->model[$property]);
+    }
+
     private function attachDefaultModel($config) {
         $this->model['url'] = 'http://'
             . $config['web_host']

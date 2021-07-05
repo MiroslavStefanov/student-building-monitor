@@ -6,8 +6,9 @@
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	  <title>Student Building Monitor</title>
 	  <link rel="stylesheet" href="assets/css/app.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
-	</head>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+        <script type="text/javascript" src="assets/js/notifications.js"></script>
+    </head>
 	<body>
 		<div class="app-dashboard shrink-medium">
       <div class="row expanded app-dashboard-top-nav-bar">
@@ -31,7 +32,10 @@
           </a>
         </div>
       </div>
-			<div class="app-dashboard-body off-canvas-wrapper">
+			<div class="app-dashboard-body2 off-canvas-wrapper">
+                <div class="top-msg" id="topMsgId">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
         <div class="translucent-form-overlay2">
           <p>Тук можете да създадете базата данни. Внимание, ако вече съществува такава, тя ще бъде изтрита!</p>
           <form method="post" action="Databases.php">
@@ -41,5 +45,12 @@
         </div>
 			</div>
 		</div>
+        <script>
+            <?php if($this->has('errors')) : ?>
+                showErrorNotification("topMsgId", <?php $this->get('errors')[0]?>);
+            <?php elseif($this->has('success')) : ?>
+                showSuccessNotification("topMsgId", "Базата е успешно създадена");
+            <?php endif; ?>
+        </script>
 	</body>
 </html>

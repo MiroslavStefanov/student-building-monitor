@@ -7,6 +7,7 @@
 	  <title>Student Building Monitor</title>
 	  <link rel="stylesheet" href="assets/css/app.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+    <script type="text/javascript" src="assets/js/notifications.js"></script>
 	</head>
 	<body>
 		<div class="app-dashboard shrink-medium">
@@ -61,5 +62,12 @@
         </div>
 			</div>
 		</div>
+    <script>
+        <?php if($this->has('errors')) : ?>
+            showErrorNotification("topMsgId", <?php $this->get('errors')[0]?>);
+        <?php elseif($this->has('rows')) : ?>
+            showSuccessNotification("topMsgId", "Добавени записи: " + <?php $this->get('rows')?>);
+        <?php endif; ?>
+    </script>
 	</body>
 </html>

@@ -8910,3 +8910,13 @@ svg {
       -ms-flex: 1 1 auto;
           flex: 1 1 auto;
 }
+
+.successNotification {
+  display: block;
+  background-color: rgba(0, 255, 0, 0.5);
+}
+
+.errorNotification {
+  display: block;
+  background-color: rgba(255, 0, 0, 0.5);
+}

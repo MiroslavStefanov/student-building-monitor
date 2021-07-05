@@ -13,6 +13,6 @@ class DatabaseController extends BaseController {
 
     public function post() : ModelAndView {
         $this->application->createDB();
-        return ModelAndView::withModelAndView([], 'database.html');
+        return ModelAndView::withModelAndView(['success' => true], 'database.html');
     }
 }

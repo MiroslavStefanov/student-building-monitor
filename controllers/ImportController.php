@@ -33,7 +33,7 @@ class ImportController extends BaseController {
         $targetTable = $_POST[self::TARGET_INPUT];
         $fileName = $fileProperties["tmp_name"];
         $importCount = $this->importFile($fileName, $targetTable);
-        return ModelAndView::withModelAndView(["file" => $fileName],'import.html');
+        return ModelAndView::withModelAndView(["file" => $fileName, "rows" => $importCount],'import.html');
     }
 
     private function importFile($fileName, $table) : int {
