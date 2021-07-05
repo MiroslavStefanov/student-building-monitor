@@ -71,13 +71,14 @@ class DBEntity {
 			|| !$entity->ID
 			|| $this->getEntity($entity->ID) === false;
 		if($isNewEntity) {
-			$joinedColumns = implode(', ', $this->columns);
+		    $escapedColumns = array_map(function ($column) { return "`$column`"; }, $this->columns);
+			$joinedColumns = implode(', ', $escapedColumns);
 			$joinedBindings = implode(', :', $this->columns);
 			$idCounter = $this->getIdCounter();
 			$entity->ID = $idCounter->NEXT_ID;
 			$sql = "INSERT INTO $this->table ($joinedColumns) VALUES (:$joinedBindings);";
 		} else {
-			$statements = array_map(function($name){ return "$name = :$name"; }, $this->columns);
+			$statements = array_map(function($name){ return "`$name` = :$name"; }, $this->columns);
 			$joinedStatements = implode(', ', $statements);
 			$sql = "UPDATE $this->table SET $joinedStatements WHERE id=$entity->ID;";
 		}
@@ -135,6 +136,7 @@ class DBEntity {
 
 	public function select(string $columns, array $joins, string $where, string $groupBy, string $orderBy, int $limit = 0) : array {
         $sql = $this->createSelectStatement($columns, $joins, $where, $groupBy, $orderBy, $limit);
+        //echo $sql;
         writeFile("/student-building-monitor/logs/log.txt", $sql);
         $result = $this->executeStatement($sql, function ($s) {
             $result = $s->execute();
