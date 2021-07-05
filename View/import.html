@@ -31,7 +31,10 @@
           </a>
         </div>
       </div>
-			<div class="app-dashboard-body off-canvas-wrapper csv-background">
+			<div class="app-dashboard-body2 off-canvas-wrapper csv-background">
+        <div class="top-msg" id="topMsgId">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
         <div class="translucent-form-overlay2">
           <p>Тук можете да попълвате данни в базата. За тази цел изберете към коя таблица се отнасят данните и прикачете съответния .csv файл.</p>
           <form method="post" action="Import.php" enctype="multipart/form-data">
@@ -54,7 +57,7 @@
             </div>
             <input type="submit" name="submit" value="Импортирай" class="primary button expanded search-button" />
           </form>
-            <a href="Databases.php" class="primary button expanded search-button">Създайте база данни</a>
+          <a href="Databases.php" class="primary button expanded search-button">Създайте база данни</a>
         </div>
 			</div>
 		</div>
