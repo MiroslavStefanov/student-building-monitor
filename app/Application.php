@@ -64,6 +64,7 @@ class Application {
 	    $this->defineDBEntity('Tutor', 'TUTORS');
 	    $this->defineDBEntity('DBEnum', 'NOM_CARDHOLDER_TYPE');
 	    $this->defineDBEntity('DBEnum', 'NOM_ACADEMIC_DEGREE');
+	    $this->defineDBEntity('DBEnum', 'NOM_ACADEMIC_SPECIALIZATION');
 
       $this->requestHandler->registerController("/Import.php", new ImportController($this));
       $this->requestHandler->registerController("/Index.php", new IndexController($this));

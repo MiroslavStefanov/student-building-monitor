@@ -44,7 +44,7 @@ class StudentController extends BaseController {
         $joins = ['AS ST ', $groupParameters['entity']->innerJoin('SP')." ON ST.$joinColumn = SP.ID ",
                                              "INNER JOIN ($activeCardholders) as AC ON AC.CH = ST.ID "];
         $groupBy = "ST.$joinColumn";
-        $result = $this->entity->select($columns, $joins, '', $groupBy);
+        $result = $this->entity->select($columns, $joins, '', $groupBy, '');
         return $result;
     }
 
@@ -57,7 +57,7 @@ class StudentController extends BaseController {
             "INNER JOIN ($lastPasses) as LAST_TIMES on C.ID = LAST_TIMES.CARDHOLDER",
             "INNER JOIN ($enteringPasses) as p2 on LAST_TIMES.LAST_TIME = p2.CT and LAST_TIMES.CARDHOLDER = p2.CH"
         ];
-        $result = $this->cardholderEntity->createSelectStatement($columns, $joins, '');
+        $result = $this->cardholderEntity->createSelectStatement($columns, $joins, '', '', '');
         return $result;
     }
 
